@@ -1,18 +1,43 @@
-import { View, Text, Button} from "react-native";
+
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+// Importing to use for swipe features
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 export default function Restaurants() {
-    const router = useRouter();
+  const [swipeResult, setSwipeResult] = useState<string | null>(null);
+  const router = useRouter();
 
-    return (
-        <View
-            style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-        }}>
+  // Swiper event
+  const onGestureEvent = (event: any) => {
+    const { translationX } = event.nativeEvent;
+
+    if (translationX > 0) {
+      // Swiped right
+      setSwipeResult("Swiped right: true");
+    } else if (translationX < 0) {
+      // Swiped left
+      setSwipeResult("Swiped left: false");
+    }
+  };
+
+  return (
+    <PanGestureHandler onGestureEvent={onGestureEvent}>
+      <View style={styles.container}>
         <Text>Swipe on Restaurants</Text>
-        <Button title="Move to Match Screen" onPress={() => router.push("/match")}></Button>
-        </View>
-    )
+        {swipeResult && <Text>{swipeResult}</Text>}
+
+        <Button title="Move to Match Screen" onPress={() => router.push("/match")} />
+      </View>
+    </PanGestureHandler>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

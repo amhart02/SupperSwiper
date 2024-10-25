@@ -1,31 +1,34 @@
-const { createClient } = require('@supabase/supabase-js');
-const dotenv = require('dotenv'); // npm package that allows access to .env variables
+// Import the dotenv package to load environment variables from a .env file
+const dotenv = require('dotenv');
 
+// Load environment variables from the .env file
 dotenv.config();
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+// Import the Sequelize constructor from the sequelize package
+const { Sequelize } = require('sequelize');
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Initialize a new Sequelize instance with the connection string from the environment variable
+const sequelize = new Sequelize(process.env.SUPABASE_URL, {
+  dialect: 'postgres', // Specify the dialect as PostgreSQL
+  dialectOptions: {
+    ssl: {
+      require: true, // Require SSL connection
+      rejectUnauthorized: false, // Allow self-signed certificates
+    },
+  },
+});
 
-async function connectDB() {
-  /* Connects to Supabase. If it connects will send 
-     back success message. Otherwise, it will send
-     back an error.
-  */ 
+// Define an asynchronous function to authenticate the database connection
+const connectDb = async () => {
   try {
-    const { error } = await supabase.auth.getSession();
-
-    if (error) {
-      console.error('Failed to connect to Supabase:', error);
-      process.exit(1);
-    } else {
-      console.log('Connected to Supabase.');
-    }
+    // Attempt to authenticate the connection
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
   } catch (error) {
-    console.error('Error connecting to the database:', error);
-    process.exit(1);
+    // Log any errors that occur during authentication
+    console.error('Unable to connect to the database:', error);
   }
-}
+};
 
-module.exports = { connectDB, supabase };
+// Export the Sequelize instance and the connectDb function
+module.exports = { sequelize, connectDb };

@@ -27,6 +27,7 @@ const { getAllRestaurants, getRestaurantById } = require('../controllers/restaur
  *                     type: string
  *                     description: The URL of the restaurant logo
  */
+// Route to get all restaurant data
 router.get('/logos', getAllRestaurants);
 
 /**
@@ -59,6 +60,7 @@ router.get('/logos', getAllRestaurants);
  *                   type: string
  *                   description: The URL of the restaurant logo
  */
+// Route to get restaurant data for single restaurant by ID
 router.get('/logos/:id', getRestaurantById);
 
 module.exports = router;

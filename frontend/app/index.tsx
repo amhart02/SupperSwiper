@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import { TouchableOpacity, GestureHandlerRootView } from "react-native-gesture-handler";
 import { useState } from 'react';
-
+import React from "react";
 
 export default function Login() {
   const router = useRouter();

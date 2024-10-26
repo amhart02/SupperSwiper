@@ -16,14 +16,11 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView>
       <Stack initialRouteName="index">
-        <Stack.Screen name="index" options={{ headerShown: false}} />
-        <Stack.Screen name="connection" options={{
-          title: "",
-          headerLeft: () => <SignOutButton/>
-        }} />
-        <Stack.Screen name="restaurants" options={{ headerShown: false}}/>
-        <Stack.Screen name="match" options={{ headerShown: false}}/>
-        <Stack.Screen name="results" options={{ headerShown: false}}/>
+        <Stack.Screen name="index" options={{ headerShown: false, animation: 'slide_from_left'}} />
+        <Stack.Screen name="connection" options={{title: "", headerLeft: () => <SignOutButton/>}} />
+        <Stack.Screen name="restaurants" options={{title: "", headerLeft: () => <SignOutButton/>}}/>
+        <Stack.Screen name="match" options={{title: "", headerLeft: () => <SignOutButton/>}}/>
+        <Stack.Screen name="results" options={{title: "", headerLeft: () => <SignOutButton/>}}/>
       </Stack>
     </GestureHandlerRootView>
   );

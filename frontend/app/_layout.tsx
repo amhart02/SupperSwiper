@@ -1,13 +1,27 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
+import { TouchableOpacity, Text} from 'react-native';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+const SignOutButton = () => {
+  const router = useRouter();
+
+  return (
+    <TouchableOpacity onPress={() => router.push("/")}>
+      <Text style={{ color: 'blue', padding: 10 }}>Sign Out</Text>
+    </TouchableOpacity>
+  );
+};
 
 export default function RootLayout() {
   return (
-    <Stack initialRouteName="login">
-      <Stack.Screen name="login" />
-      <Stack.Screen name="connection" />
-      <Stack.Screen name="restaurants"/>
-      <Stack.Screen name="match"/>
-      <Stack.Screen name="results"/>
-    </Stack>
+    <GestureHandlerRootView>
+      <Stack initialRouteName="index">
+        <Stack.Screen name="index" options={{ headerShown: false, animation: 'slide_from_left'}} />
+        <Stack.Screen name="connection" options={{title: "", headerLeft: () => <SignOutButton/>}} />
+        <Stack.Screen name="restaurants" options={{title: "", headerLeft: () => <SignOutButton/>}}/>
+        <Stack.Screen name="match" options={{title: "", headerLeft: () => <SignOutButton/>}}/>
+        <Stack.Screen name="results" options={{title: "", headerLeft: () => <SignOutButton/>}}/>
+      </Stack>
+    </GestureHandlerRootView>
   );
 }

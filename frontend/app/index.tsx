@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import { TouchableOpacity, GestureHandlerRootView } from "react-native-gesture-handler";
 import { useState } from 'react';
-
+import React from "react";
 
 export default function Login() {
   const router = useRouter();
@@ -12,6 +12,7 @@ export default function Login() {
   return (
     <GestureHandlerRootView>
       <View style={styles.container}>
+        <Text style={styles.logoname}>Supper Swiper</Text>
         <Text style={styles.title}>Login</Text>
         <TextInput 
         style={styles.input}
@@ -39,15 +40,19 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
+  logoname: {
+    fontSize: 40
+  },
   container: {
+    marginTop: 80,
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20
   },
   title: {
-    fontSize: 40,
-    marginBottom: 50,
+    fontSize: 30,
+    marginBottom: 40,
+    marginTop: 50
   },
   input: {
     height: 50,
@@ -61,9 +66,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
+    marginTop: 30,
+    borderWidth: 0,
     borderRadius: 5,
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    height: 40,
+    borderColor: "none",
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    textAlign: "center",
+    backgroundColor: "#74C365"
   }
 })

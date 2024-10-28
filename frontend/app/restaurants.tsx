@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 // Importing to use for swipe features
 import { PanGestureHandler } from "react-native-gesture-handler";
@@ -24,9 +24,9 @@ export default function Restaurants() {
   return (
     <PanGestureHandler onGestureEvent={onGestureEvent}>
       <View style={styles.container}>
-        <Text>Swipe on Restaurants</Text>
+        <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg"}} style={styles.image} />
+        <Text style={styles.restaurant}>Name of Restaurant</Text>
         {swipeResult && <Text>{swipeResult}</Text>}
-
         <Button title="Move to Match Screen" onPress={() => router.push("/match")} />
       </View>
     </PanGestureHandler>
@@ -35,8 +35,17 @@ export default function Restaurants() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 120,
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
+  image: {
+    width: 300,
+    height: 300,
+    resizeMode: "cover"
+  },
+  restaurant: {
+    margin: 40,
+    fontSize: 30
+  }
 });

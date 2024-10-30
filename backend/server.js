@@ -1,6 +1,9 @@
 // Import the express package
 const express = require('express');
 
+// Import Cors
+const cors = require('cors');
+
 // Import the body-parser package to parse incoming request bodies
 const bodyParser = require('body-parser');
 
@@ -22,6 +25,9 @@ const port = process.env.PORT || 8080;
 
 // Connect to the database
 connectDb();
+
+// CORS
+app.use(cors());
 
 // Use body-parser middleware to parse JSON request bodies
 app.use(bodyParser.json());

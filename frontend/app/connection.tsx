@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 export default function Connection() {
     const router = useRouter();
 
-    function generateCode() {
+    function generateLobby() {
       // figure this out later 
     }
 
@@ -14,7 +14,7 @@ export default function Connection() {
     
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => generateCode()}>
+        <TouchableOpacity onPress={() => generateLobby()}>
           <Text style={styles.hostjoin}>Host</Text>
         </TouchableOpacity>
         <Text style={styles.or}>OR</Text>

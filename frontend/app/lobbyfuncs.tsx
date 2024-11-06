@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'https://your-project-id.supabase.co';
-const supabaseKey = 'your-anon-key';
-const supabase = createClient(supabaseUrl, supabaseKey);
-
+import supabase from "../../backend/config/supa_client.js"
 
 // Function to create a 4-digit code
 const generateLobbyCode = () => {
@@ -11,7 +6,7 @@ const generateLobbyCode = () => {
   };
   
   // Function to create a new lobby table
-  async function generateLobby(setLobbyId) {
+  async function generateLobby(str: setLobbyId) {
     const lobbyId = generateLobbyCode();
   
     // Check for any previous table with this ID and delete

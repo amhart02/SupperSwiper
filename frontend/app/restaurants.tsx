@@ -1,73 +1,105 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, Button, StyleSheet, Image, Animated } from "react-native";
 import { useRouter } from "expo-router";
-// Importing to use for swipe features
-import { PanGestureHandler, State } from "react-native-gesture-handler";
+import { PanGestureHandler, State, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 
-// Define TypeScript type for restaurant data
 type Restaurant = {
   id: string;
   restaurant: string;
   url: string;
-}
+};
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeResult, setSwipeResult] = useState<string | null>(null);
   const router = useRouter();
-  const translateX = new Animated.Value(0); // Image starts at position 0
+  const translateX = new Animated.Value(0); // For the current image swipe
+  const nextImageTranslateX = new Animated.Value(0); // For the next image swipe
 
-// Fetch data from the API
-useEffect(() => {
-  const fetchRestaurants = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/logos');
-      const data: Restaurant[] = await response.json();
-      setRestaurants(data); // Store the pictures in a list
-    } catch (error) {
-      console.error("Error fetching restaurants:", error);
-    }
-  };
+  // Fetch data from the API
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await fetch("https://supperswiper.onrender.com/logos");
+        const data: Restaurant[] = await response.json();
+        setRestaurants(data);
+      } catch (error) {
+        console.error("Error fetching restaurants:", error);
+      }
+    };
 
-  fetchRestaurants();
-}, []);
+    fetchRestaurants();
+  }, []);
 
   // Handle swipe gestures
-  const onGestureEvent = Animated.event(
-    [{ nativeEvent: { translationX: translateX } }], // Update frame position based on finger movement
-    { useNativeDriver: true }
-  );
+  const onGestureEvent = useCallback((event: PanGestureHandlerGestureEvent) => {
+    translateX.setValue(event.nativeEvent.translationX);
+  }, []);
 
   const onHandlerStateChange = ({ nativeEvent }: any) => {
     if (nativeEvent.state === State.END) {
-      if (nativeEvent.translationX > 50) {
+      const swipeThreshold = 50;
+      if (nativeEvent.translationX > swipeThreshold) {
         // Swiped right
         setSwipeResult("Swiped right: true");
-        // Store the response (true) for the current restaurant
-        // TODO: Implement network socket to store the response
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % restaurants.length); // Show next logo
-      } else if (nativeEvent.translationX < -50) {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % restaurants.length);
+        animateSwipe("right");
+      } else if (nativeEvent.translationX < -swipeThreshold) {
         // Swiped left
         setSwipeResult("Swiped left: false");
-        // Store the response (false) for the current restaurant
-        // TODO: Implement network socket to store the response
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % restaurants.length); // Show next logo
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % restaurants.length);
+        animateSwipe("left");
+      } else {
+        // Reset if not swiped enough
+        resetPosition();
       }
-      Animated.spring(translateX, {
-        toValue: 0, // Move the frame back to the center
-        useNativeDriver: true,
-      }).start();
     }
   };
 
+  const animateSwipe = (direction: "right" | "left") => {
+    // Slide current image off the screen
+    Animated.timing(translateX, {
+      toValue: direction === "right" ? 500 : -500,
+      duration: 200, // Shorter duration for a faster animation
+      useNativeDriver: true,
+    }).start();
+
+    // Slide the next image into view
+    Animated.timing(nextImageTranslateX, {
+      toValue: 0, // Center the next image
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+
+    // Reset translateX and show the next image in the center after the swipe completes
+    setTimeout(() => {
+      translateX.setValue(0); // Reset current image
+      nextImageTranslateX.setValue(0); // Reset the next image
+    }, 200); // Matches the animation duration for smoother transitions
+  };
+
+  const resetPosition = () => {
+    Animated.spring(translateX, {
+      toValue: 0,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
-    <PanGestureHandler onGestureEvent={onGestureEvent} onHandlerStateChange={onHandlerStateChange}>
+    <PanGestureHandler
+      onGestureEvent={onGestureEvent} 
+      onHandlerStateChange={onHandlerStateChange}
+    >
       <View style={styles.container}>
         {restaurants.length > 0 && (
-          <Animated.View style={[styles.restaurantContainer, { transform: [{ translateX }] }]}>
+          <Animated.View
+            style={[styles.restaurantContainer, { transform: [{ translateX }] }]}>
             <View style={styles.imageContainer}>
-              <Image source={{ uri: restaurants[currentIndex].url }} style={styles.image} />
+              <Image
+                source={{ uri: restaurants[currentIndex].url }}
+                style={styles.image}
+              />
             </View>
             <Text style={styles.restaurant}>{restaurants[currentIndex].restaurant}</Text>
           </Animated.View>
@@ -90,8 +122,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageContainer: {
-    width: 400, 
-    height: 300, 
+    width: 400,
+    height: 300,
     backgroundColor: "#f0f0f0",
     justifyContent: "center",
     alignItems: "center",
@@ -103,6 +135,6 @@ const styles = StyleSheet.create({
   },
   restaurant: {
     margin: 40,
-    fontSize: 30
-  }
+    fontSize: 30,
+  },
 });

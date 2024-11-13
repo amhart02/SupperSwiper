@@ -26,8 +26,8 @@ const port = process.env.PORT || 8080;
 // Connect to the database
 connectDb();
 
-// CORS
-app.use(cors());
+// CORS Configuration
+app.use(cors({ origin: '*' }));
 
 // Use body-parser middleware to parse JSON request bodies
 app.use(bodyParser.json());

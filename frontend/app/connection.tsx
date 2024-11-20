@@ -41,14 +41,12 @@ export async function generateLobby() {
   }
 }
 
+// variable for the username input field
+const [userName, setUserName] = useState("");
 // creating a variable to hold the generated lobby id to then display to the user
 const [lobbyId, setLobbyId] = useState("0000"); 
-
-
-
-
-
-
+// this variable is for the users lobby input that they enter
+const [myLobby, setMyLobby] = useState("");
 
 
 
@@ -64,7 +62,13 @@ export default function Connection() {
         {/* name text and input */}
         <View style={styles.sections}>
           <Text style={styles.name}>Name</Text>
-          <TextInput style={styles.input} placeholder="Please enter name" placeholderTextColor={"#D3D3D3"}/>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter username"
+            placeholderTextColor={"#D3D3D3"}
+            value={userName} // Bind the input value to the state
+            onChangeText={setUserName} // Update the state whenever the text changes
+          />
         </View>
 
         {/* host button and input */}
@@ -85,7 +89,13 @@ export default function Connection() {
         <TouchableOpacity onPress={() => router.push("/wait")}>
           <Text style={styles.hostjoin}>Join</Text>
         </TouchableOpacity>
-        <TextInput style={styles.input} placeholder="Enter code" placeholderTextColor={"#D3D3D3"}/>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter code"
+          placeholderTextColor={"#D3D3D3"}
+          value={myLobby} // Bind the input value to the state
+          onChangeText={setMyLobby} // Update the state whenever the text changes
+        />
         </View>
       
       </View>

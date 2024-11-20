@@ -14,35 +14,58 @@ export default function Connection() {
     
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => generateLobby()}>
+
+        {/* name text and input */}
+        <View style={styles.sections}>
+          <Text style={styles.name}>Name</Text>
+          <TextInput style={styles.input} placeholder="Please enter name" placeholderTextColor={"#D3D3D3"}/>
+        </View>
+
+        {/* host button and input */}
+        <View style={styles.sections}>
+        <TouchableOpacity onPress={() => generateCode()}>
           <Text style={styles.hostjoin}>Host</Text>
         </TouchableOpacity>
-        <Text style={styles.or}>OR</Text>
-        <TouchableOpacity onPress={() => joinLobby()}>
+        <TextInput style={styles.input} placeholder="Displayed Code" placeholderTextColor={"#D3D3D3"}/>
+        </View>
+
+        {/* join button and input */}
+        <View style={styles.sections}>
+        <TouchableOpacity onPress={() => router.push("/wait")}>
           <Text style={styles.hostjoin}>Join</Text>
         </TouchableOpacity>
-        <TextInput style={styles.input} placeholder="Enter code"/>
-        <Button title="Move to restaurant choices" onPress={() => router.push("/restaurants")}></Button>  
+        <TextInput style={styles.input} placeholder="Enter code" placeholderTextColor={"#D3D3D3"}/>
+        </View>
+      
       </View>
     );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 80,
+    marginTop: 40,
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
   },
-  or: {
-    margin: 30,
+  name: {
     fontSize: 20,
+  },
+  sections: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   hostjoin: {
-    backgroundColor: "#74C365",
-    paddingVertical: 20, 
-    paddingHorizontal: 30,
-    fontSize: 20,
-    color: "white"
+    borderWidth: 0,
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    textAlign: "center",
+    backgroundColor: "#19be64",
+    color: "white",
+    fontSize: 20
   },
   input: {
     margin: 30,
@@ -52,7 +75,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     borderRadius: 5,
-    color: "#000",
-    fontSize: 16,
+    color: "#333",
+    fontSize: 15,
   }
 })

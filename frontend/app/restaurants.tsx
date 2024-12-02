@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, Button, StyleSheet, Image, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated, Image, Button, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { PanGestureHandler, State, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 
@@ -13,23 +13,32 @@ export default function Restaurants() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeResult, setSwipeResult] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const translateX = new Animated.Value(0); // For the current image swipe
-  const nextImageTranslateX = new Animated.Value(0); // For the next image swipe
 
   // Fetch data from the API
   useEffect(() => {
-    const fetchRestaurants = async () => {
+    const fetchAndPreloadImages = async () => {
       try {
         const response = await fetch("https://supperswiper.onrender.com/logos");
         const data: Restaurant[] = await response.json();
+  
+        // Preload all images
+        const prefetchPromises = data.map((restaurant) => 
+          Image.prefetch(restaurant.url)
+        );
+        await Promise.all(prefetchPromises);
+  
         setRestaurants(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching restaurants:", error);
+        setLoading(false);
       }
     };
-
-    fetchRestaurants();
+  
+    fetchAndPreloadImages();
   }, []);
 
   // Handle swipe gestures
@@ -63,20 +72,10 @@ export default function Restaurants() {
       toValue: direction === "right" ? 500 : -500,
       duration: 200, // Shorter duration for a faster animation
       useNativeDriver: true,
-    }).start();
-
-    // Slide the next image into view
-    Animated.timing(nextImageTranslateX, {
-      toValue: 0, // Center the next image
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-
-    // Reset translateX and show the next image in the center after the swipe completes
-    setTimeout(() => {
-      translateX.setValue(0); // Reset current image
-      nextImageTranslateX.setValue(0); // Reset the next image
-    }, 200); // Matches the animation duration for smoother transitions
+    }).start(() => {
+      // Reset translateX and show the next image in the center after the swipe completes
+      translateX.setValue(0);
+    });
   };
 
   const resetPosition = () => {
@@ -86,15 +85,27 @@ export default function Restaurants() {
     }).start();
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <PanGestureHandler
-      onGestureEvent={onGestureEvent} 
+      onGestureEvent={onGestureEvent}
       onHandlerStateChange={onHandlerStateChange}
     >
       <View style={styles.container}>
         {restaurants.length > 0 && (
           <Animated.View
-            style={[styles.restaurantContainer, { transform: [{ translateX }] }]}>
+            style={[
+              styles.restaurantContainer,
+              { transform: [{ translateX }] },
+            ]}
+          >
             <View style={styles.imageContainer}>
               <Image
                 source={{ uri: restaurants[currentIndex].url }}
@@ -115,6 +126,11 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 120,
     flex: 1,
+    alignItems: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
   restaurantContainer: {
@@ -138,3 +154,4 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
 });
+

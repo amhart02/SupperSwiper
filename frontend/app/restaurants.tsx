@@ -14,6 +14,7 @@ export default function Restaurants() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeResult, setSwipeResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const router = useRouter();
   const translateX = new Animated.Value(0); // For the current image swipe
 
@@ -75,6 +76,7 @@ export default function Restaurants() {
     }).start(() => {
       // Reset translateX and show the next image in the center after the swipe completes
       translateX.setValue(0);
+      setImageLoaded(false);
     });
   };
 
@@ -83,6 +85,10 @@ export default function Restaurants() {
       toValue: 0,
       useNativeDriver: true,
     }).start();
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
   };
 
   if (loading) {
@@ -110,6 +116,7 @@ export default function Restaurants() {
               <Image
                 source={{ uri: restaurants[currentIndex].url }}
                 style={styles.image}
+                onLoad={handleImageLoad}
               />
             </View>
             <Text style={styles.restaurant}>{restaurants[currentIndex].restaurant}</Text>

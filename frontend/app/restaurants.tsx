@@ -25,12 +25,6 @@ export default function Restaurants() {
         const response = await fetch("https://supperswiper.onrender.com/logos");
         const data: Restaurant[] = await response.json();
   
-        // Preload all images
-        const prefetchPromises = data.map((restaurant) => 
-          Image.prefetch(restaurant.url)
-        );
-        await Promise.all(prefetchPromises);
-  
         setRestaurants(data);
         setLoading(false);
       } catch (error) {
@@ -76,7 +70,7 @@ export default function Restaurants() {
     }).start(() => {
       // Reset translateX and show the next image in the center after the swipe completes
       translateX.setValue(0);
-      setImageLoaded(false);
+      setImageLoaded(false); // Reset image loaded state for the next image
     });
   };
 
@@ -113,6 +107,7 @@ export default function Restaurants() {
             ]}
           >
             <View style={styles.imageContainer}>
+              {!imageLoaded && <ActivityIndicator size="large" color="#0000ff" />}
               <Image
                 source={{ uri: restaurants[currentIndex].url }}
                 style={styles.image}
@@ -161,4 +156,3 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
 });
-

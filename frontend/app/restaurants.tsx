@@ -107,7 +107,6 @@ export default function Restaurants() {
             ]}
           >
             <View style={styles.imageContainer}>
-              {!imageLoaded && <ActivityIndicator size="large" color="#0000ff" />}
               <Image
                 source={{ uri: restaurants[currentIndex].url }}
                 style={styles.image}

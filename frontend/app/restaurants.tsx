@@ -3,6 +3,14 @@ import { View, Text, StyleSheet, Animated, Image, Button, ActivityIndicator } fr
 import { useRouter } from "expo-router";
 import { PanGestureHandler, State, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 
+export const restaurantList: string[] = [];
+
+function updateArray(item: Restaurant) {
+  restaurantList.push(item.restaurant);
+}
+
+
+
 type Restaurant = {
   id: string;
   restaurant: string;
@@ -24,7 +32,7 @@ export default function Restaurants() {
       try {
         const response = await fetch("https://supperswiper.onrender.com/logos");
         const data: Restaurant[] = await response.json();
-  
+
         setRestaurants(data);
         setLoading(false);
       } catch (error) {
@@ -32,7 +40,7 @@ export default function Restaurants() {
         setLoading(false);
       }
     };
-  
+
     fetchAndPreloadImages();
   }, []);
 
@@ -47,6 +55,7 @@ export default function Restaurants() {
       if (nativeEvent.translationX > swipeThreshold) {
         // Swiped right
         setSwipeResult("Swiped right: true");
+        updateArray(restaurants[currentIndex]);
         setCurrentIndex((prevIndex) => (prevIndex + 1) % restaurants.length);
         animateSwipe("right");
       } else if (nativeEvent.translationX < -swipeThreshold) {

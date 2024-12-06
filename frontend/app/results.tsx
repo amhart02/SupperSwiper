@@ -4,21 +4,13 @@ export default function results() {
     return (
         <View style={styles.container}>
             <Text style={styles.matches}>Matches</Text>
-            <View style={styles.eachrestaurant}>
-                <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg" }} style={styles.image} />
-                <Text style={styles.restaurant}>Name of Restaurant</Text>
-            </View>
-            <View style={styles.eachrestaurant}>
-                <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg" }} style={styles.image} />
-                <Text style={styles.restaurant}>Name of Restaurant</Text>
-            </View>
-            <View style={styles.eachrestaurant}>
-                <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg" }} style={styles.image} />
-                <Text style={styles.restaurant}>Name of Restaurant</Text>
-            </View>
-            <Text>Made a results page just in case we need it.</Text>
+            {restaurantList.map((restaurant, index) => (
+                <View key={index} style={styles.eachrestaurant}>
+                    <Text style={styles.restaurant}>{restaurant}</Text>
+                </View>
+            ))}
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

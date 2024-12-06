@@ -14,7 +14,7 @@ export default function Login() {
         <Image source={require("../assets/images/supper_swiper_logo.png")} style={styles.image} />
         
         {/* start button */}
-        <TouchableOpacity onPress={() => router.push("/connection")}>
+        <TouchableOpacity onPress={() => router.push("/restaurants")}>
           <Text style={styles.button}>Start</Text>
           </TouchableOpacity>
       </View>

@@ -105,7 +105,7 @@ export default function Restaurants() {
           </Animated.View>
         )}
         {swipeResult && <Text>{swipeResult}</Text>}
-        <Button title="Move to Match Screen" onPress={() => router.push("/match")} />
+        <Button title="Move to Match Screen" onPress={() => router.push("/results")} />
       </View>
     </PanGestureHandler>
   );

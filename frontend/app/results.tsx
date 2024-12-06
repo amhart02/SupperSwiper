@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-
+import { restaurantList } from './restaurants';
 export default function results() {
     return (
         <View style={styles.container}>

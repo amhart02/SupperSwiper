@@ -1,24 +1,16 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-
+import { restaurantList } from './restaurants';
 export default function results() {
     return (
-    <View style={styles.container}>
-        <Text style={styles.matches}>Matches</Text>
-        <View style={styles.eachrestaurant}>
-        <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg"}} style={styles.image} />
-        <Text style={styles.restaurant}>Name of Restaurant</Text>
+        <View style={styles.container}>
+            <Text style={styles.matches}>Matches</Text>
+            {restaurantList.map((restaurant, index) => (
+                <View key={index} style={styles.eachrestaurant}>
+                    <Text style={styles.restaurant}>{restaurant}</Text>
+                </View>
+            ))}
         </View>
-        <View style={styles.eachrestaurant}>
-        <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg"}} style={styles.image} />
-        <Text style={styles.restaurant}>Name of Restaurant</Text>
-        </View>
-        <View style={styles.eachrestaurant}>
-        <Image source={{ uri: "https://i.redd.it/2mhrqnmb7s941.jpg"}} style={styles.image} />
-        <Text style={styles.restaurant}>Name of Restaurant</Text>
-        </View>
-    <Text>Made a results page just in case we need it.</Text>
-    </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -48,4 +40,4 @@ const styles = StyleSheet.create({
     matches: {
         fontSize: 20
     }
-    })
+})

@@ -23,7 +23,7 @@ export default function Connection() {
 
         {/* host button and input */}
         <View style={styles.sections}>
-        <TouchableOpacity onPress={() => generateCode()}>
+        <TouchableOpacity onPress={() => generateLobby()}>
           <Text style={styles.hostjoin}>Host</Text>
         </TouchableOpacity>
         <TextInput style={styles.input} placeholder="Displayed Code" placeholderTextColor={"#D3D3D3"}/>

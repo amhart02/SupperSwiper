@@ -12,13 +12,20 @@ Jacob Ethington
 A multiuser application that allows individual users to swipe left or right (no or yes respectively) on local restaurants in Rexburg, ID until a match is made in order to help the eating out decision process go more smoothly.
 
 ## Architecture
-
+Programming Languages: TypeScript, JavaScript
+Framework: React Native
+Data Storage: Supabase
+Development Tools: Visual Studio Code
 
 ## Software Features
 
-* [ ] First feature here
-* [ ] Second feature here
-* [ ] Keep going ....
+* [ ] Lobby functionality
+* [X] Cloud database of local restaurants in Rexburg Idaho
+* [X] Ability to swipe True/False on restaurants
+* [ ] Range and Categorize restuarants
+* [ ] Compare results with other users in Lobby
+* [ ] Account Authentication
+* [X] Results page
 
 ## Team Communication
 Microsoft Teams
@@ -36,3 +43,15 @@ Microsoft Teams
 
 ## Reflections
 
+## What Went Well:
+-  Brainstorming sessions
+-  Showing up for meetings
+-  Team members were able to work together effectively
+
+## What Did Not Go Well:
+-  Understanding how to implement features (specifically lobby functionality)
+    -  We should have reached out for help
+-  Coordinating tasks
+    -  Clarify specifics
+-  Having demonstratable code
+    -  Coordinating better
